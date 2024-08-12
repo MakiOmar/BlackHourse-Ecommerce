@@ -4,6 +4,8 @@ use App\Http\Controllers\AppController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ShopController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,3 +29,9 @@ Route::group([ 'middleware' => 'auth' ], function () {
 Route::group([ 'middleware' => ['auth', 'auth.admin'] ], function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 });
+
+Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
+Route::get('/product/{slug}', [ShopController::class, 'productDetails'])->name('shop.product.details');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/store', [CartController::class, 'addToCart'])->name('cart.store');
+Route::put('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
