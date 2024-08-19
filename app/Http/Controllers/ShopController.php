@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Models\Brand;
 
 class ShopController extends Controller
 {
@@ -40,8 +42,39 @@ class ShopController extends Controller
                 $order_type = 'DESC';
                 break;
         }
-        $products = Product::orderBy($order_by, $order_type)->paginate($size);
-        return view('shop', ['products' => $products, 'page' => $page, 'size' => $size, 'order' => $order]);
+        $categories = Category::orderBy('name', 'ASC')->get();
+        $q_categories = $request->query('categories');
+
+        $brands = Brand::orderBy('name', 'ASC')->get();
+        $q_brands = $request->query('brands');
+
+        $prange = $request->query('prange') ?? '0,500';
+        $from = explode(',', $prange)[0];
+        $to = explode(',', $prange)[1];
+        $products = Product::where(
+            function ($query) use ($q_categories) {
+                $query->whereIn('category_id', explode(',', $q_categories))->orWhereRaw("'" . $q_categories . "'=''");
+            }
+        )
+        ->where(
+            function ($query) use ($q_brands) {
+                $query->whereIn('brand_id', explode(',', $q_brands))->orWhereRaw("'" . $q_brands . "'=''");
+            }
+        )
+        ->whereBetween('regular_price', array($from,$to))
+        ->orderBy($order_by, $order_type)->paginate($size);
+        return view('shop', [
+            'products' => $products,
+            'page' => $page,
+            'size' => $size,
+            'order' => $order,
+            'categories' => $categories,
+            'q_categories' => $q_categories,
+            'brands' => $brands,
+            'q_brands' => $q_brands,
+            'from' => $from,
+            'to' => $to,
+        ]);
     }
 
     public function productDetails($slug)

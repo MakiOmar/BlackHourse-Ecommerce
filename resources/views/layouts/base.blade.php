@@ -69,7 +69,9 @@
             padding: 10px 0;
             min-width: 250px;
         }
-
+        .brand-logo img{
+            max-height: 80px!important;
+        }
         .name-usr {
             background: #e87316;
             padding: 8px 12px;
@@ -156,10 +158,10 @@
                                     </li>
                                     <li class="onhover-dropdown wislist-dropdown">
                                         <div class="cart-media">
-                                            <a href="wishlist/list.html">
+                                            <a href="{{route('wishlist.list')}}">
                                                 <i data-feather="heart"></i>
                                                 <span id="wishlist-count" class="label label-theme rounded-pill">
-                                                    0
+                                                    {{ Cart::instance('wishlist')->content()->count() }}
                                                 </span>
                                             </a>
                                         </div>
@@ -294,12 +296,12 @@
                                             India</span></span>
                                 </li>
                                 <li>
-                                    <span><b>Email:</b><span class="font-light"> contact@surfsidemedia.in</span></span>
+                                    <span><b>Email:</b><span class="font-light"> contact@Blackhorse.com</span></span>
                                 </li>
                             </ul>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-4 col-sm-6">
+                    <div class="col-lg-3 col-md-4 col-sm-6">
                         <div class="footer-links">
                             <div class="footer-title">
                                 <h3>About us</h3>
@@ -325,39 +327,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
-                        <div class="footer-links">
-                            <div class="footer-title">
-                                <h3>New Categories</h3>
-                            </div>
-                            <div class="footer-content">
-                                <ul>
-                                    <li>
-                                        <a href="{{ route( 'shop.index' ) }}" class="font-dark">Latest Shoes</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route( 'shop.index' ) }}" class="font-dark">Branded Jeans</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route( 'shop.index' ) }}" class="font-dark">New Jackets</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route( 'shop.index' ) }}" class="font-dark">Colorfull Hoodies</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route( 'shop.index' ) }}" class="font-dark">Shiner Goggles</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+
+                    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
                         <div class="footer-links">
                             <div class="footer-title">
                                 <h3>Get Help</h3>
                             </div>
                             <div class="footer-content">
                                 <ul>
+                                    <li>
+                                        <a href="{{ route( 'shop.index' ) }}" class="font-dark">Latest products</a>
+                                    </li>
                                     <li>
                                         <a href="#" class="font-dark">Your Orders</a>
                                     </li>
