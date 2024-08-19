@@ -83,7 +83,7 @@
         <div class="form-group">
             <label for="image">Current Image</label>
             <div>
-                <img src="{{ asset('images/' . $product->image) }}" alt="Product Image" class="img-thumbnail" width="150">
+                <img src="{{ asset('assets/uploads/' . $product->image) }}" alt="Product Image" class="img-thumbnail" width="150">
             </div>
         </div>
 
@@ -97,7 +97,7 @@
             <div>
                 @if($product->images)
                     @foreach(explode(',', $product->images) as $image)
-                        <img src="{{ asset('images/' . $image) }}" alt="Additional Image" class="img-thumbnail" width="100">
+                        <img src="{{ asset('assets/uploads/' . $image) }}" alt="Additional Image" class="img-thumbnail" width="100">
                     @endforeach
                 @endif
             </div>

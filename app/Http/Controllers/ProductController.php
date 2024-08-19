@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
@@ -55,17 +56,15 @@ class ProductController extends Controller
     {
         return $user;
     }
-    protected function validation($request)
+    protected function validation($request, $extra_validation = array())
     {
-        $validatedData =  $request->validate([
+        $default = [
             'author_id' => 'required|exists:users,id',
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:products,slug',
             'short_description' => 'nullable|string|max:500',
             'description' => 'nullable|string|max:1000',
             'regular_price' => 'required|numeric|min:0',
             'sale_price' => 'nullable|numeric|min:0|lt:regular_price',
-            'SKU' => 'required|string|max:100|unique:products,SKU',
             'stock_status' => 'required|in:instock,outofstock',
             'featured' => 'nullable|boolean',
             'quantity' => 'required|integer|min:0',
@@ -74,13 +73,15 @@ class ProductController extends Controller
             'images.*' => 'image|mimes:jpg,jpeg,png,gif|max:2048',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
-        ]);
+        ];
+        $validate = array_merge($default, $extra_validation);
+        $validatedData =  $request->validate($validate);
 
         // Handle single image upload
         if ($request->hasFile('image')) {
             $imageFile = $request->file('image');
             $imageName = $imageFile->getClientOriginalName(); // Get original file name with extension.
-            $imageFile->move(public_path() . '/images', $imageName); // Store the file with its original name.
+            $imageFile->move(public_path() . 'assets/uploads', $imageName); // Store the file with its original name.
             $validatedData['image'] = $imageName; // Save the file name in the 'image' field.
         }
 
@@ -89,7 +90,7 @@ class ProductController extends Controller
             $imageNames = [];
             foreach ($request->file('images') as $imageFile) {
                 $imageName = $imageFile->getClientOriginalName(); // Get original file name with extension.
-                $imageFile->move(public_path() . '/images', $imageName); // Store the file with its original name.
+                $imageFile->move(public_path() . '/assets/uploads', $imageName); // Store the file with its original name.
                 $imageNames[] = $imageName; // Collect the file names
             }
             $validatedData['images'] = implode(',', $imageNames); // Save the file names as a JSON string in the 'images' field.
@@ -102,7 +103,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $this->validation($request);
+        $validated = $this->validation($request, array( 'slug' => 'required|string|max:255|unique:products,slug', 'SKU' => 'required|string|max:100|unique:products,SKU', ));
         $product   = Product::create($validated);
         return redirect()->route('product.edit', array( 'product' => $product->id ));
     }
@@ -132,7 +133,23 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $validated = $this->validation($request);
+        $validated = $this->validation(
+            $request,
+            array(
+                'slug' => [
+                    'required',
+                    'string',
+                    'max:255',
+                    Rule::unique('products', 'slug')->ignore($product->id),
+                ],
+                'SKU' => [
+                    'required',
+                    'string',
+                    'max:255',
+                    Rule::unique('products', 'SKU')->ignore($product->id),
+                ],
+            )
+        );
         $product->update($validated);
         return redirect()->back()->with('success', 'Product has been updated');
     }

@@ -18,7 +18,7 @@
                         <p class="card-text"><strong>Description:</strong> {{ Illuminate\Support\Str::limit($product->description, 40) }}</p>
                         <p class="card-text"><strong>Price:</strong> ${{ $product->regular_price }}</p>
                         <div class="d-flex justify-content-between">
-                            <a class="m-2" href="{{ route( 'product.show', [ 'product' => $product->id ] ) }}">View</a>
+                            <div><a class="m-2" href="{{ route( 'product.show', [ 'product' => $product->id ] ) }}">View</a>|<a class="m-2" href="{{ route( 'product.edit', [ 'product' => $product->id ] ) }}">Edit</a></div>
                             <form action="{{ route('product.destroy', ['product' => $product->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');">
                                 @csrf
                                 @method('DELETE')

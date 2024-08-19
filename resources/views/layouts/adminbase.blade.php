@@ -252,18 +252,22 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3 sidebar">
-                <h2>Sidebar</h2>
-                <ul class="d-flex flex-column">
-                    <li>products
+                <h2 class="mb-3">Dashboard</h2>
+                <ul class="navbar-nav mr-auto flex-column vertical-nav">
+                    <li class="nav-item">
+                        <h3>PRODUCTS</h3>
                         <ul class="submenu d-flex flex-column">
-                            <li><a href="{{ route('product') }}">All Product</a></li>
-                            <li><a href="{{ route('product.create') }}">Add Product</a></li>
+                            <li><a class="nav-link" href="{{ route('product') }}">All Product</a></li>
+                            <li><a class="nav-link" href="{{ route('product.create') }}">Add Product</a></li>
                         </ul>
                     </li>
-                    <li>Users
+                    <hr class="hr" />
+                    <li>
+                        <h3>USERS</h3>
+                        
                         <ul class="submenu d-flex flex-column">
-                            <li><a href="#">Users</a></li>
-                            <li><a href="#">Create user</a></li>
+                            <li><a class="nav-link" href="{{route( 'users.list' )}}">Users</a></li>
+                            <li><a class="nav-link" href="#">Create user</a></li>
                         </ul>
                     </li>
                 </ul>
