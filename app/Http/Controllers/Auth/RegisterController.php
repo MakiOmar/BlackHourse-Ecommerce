@@ -51,6 +51,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'account-type' => 'required|in:customer,vendor',
         ]);
     }
 
@@ -62,10 +63,12 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $utype = $data['account-type'] === 'customer' ? 'USR' : 'VDR';
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'utype' => $utype,
         ]);
     }
 }

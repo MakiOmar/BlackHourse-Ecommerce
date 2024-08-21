@@ -257,17 +257,8 @@
                     <li class="nav-item">
                         <h3>PRODUCTS</h3>
                         <ul class="submenu d-flex flex-column">
-                            <li><a class="nav-link" href="{{ route('product') }}">All Product</a></li>
-                            <li><a class="nav-link" href="{{ route('product.create') }}">Add Product</a></li>
-                        </ul>
-                    </li>
-                    <hr class="hr" />
-                    <li>
-                        <h3>USERS</h3>
-                        
-                        <ul class="submenu d-flex flex-column">
-                            <li><a class="nav-link" href="{{route( 'users.list' )}}">Users</a></li>
-                            <li><a class="nav-link" href="#">Create user</a></li>
+                            <li><a class="nav-link" href="{{ route('vendor.products') }}">All Product</a></li>
+                            <li><a class="nav-link" href="{{ route('vendor.product.create') }}">Add Product</a></li>
                         </ul>
                     </li>
                 </ul>

@@ -19,11 +19,26 @@ class ProductController extends Controller
     {
         // Method one
         $user     = Auth()->user();
-        $products = Product::all();
+        if ($user->utype === 'ADM') {
+            $products = Product::all();
+            $view     = 'product.show';
+            $edit     = 'product.edit';
+        } elseif ($user->utype === 'VDR') {
+            $products = Product::where('author_id', $user->id)->get();
+            $view     = 'vendor.product.show';
+            $edit     = 'vendor.product.edit';
+        }
         // Method two
         // $products = Product::where( 'user_id', Auth()->id() )->get();
 
-        return view('products.index', compact('user', 'products'));
+        return view('products.index', compact('user', 'products', 'view', 'edit'));
+    }
+
+    public function productDetails($slug)
+    {
+        $product = Product::where('slug', $slug)->first();
+        $products = Product::where('slug', '!=', $slug)->inRandomOrder()->get()->take(8);
+        return view('details', ['product' => $product, 'products' => $products]);
     }
 
     public function userProducts()
@@ -126,13 +141,23 @@ class ProductController extends Controller
         $authors = User::all();
         $categories = Category::all();
         $brands = Brand::all();
-        return view('products.edit', compact('product', 'user', 'categories', 'brands', 'authors'));
+
+        if ($user->utype === 'ADM') {
+            $update   = 'product.update';
+        } elseif ($user->utype === 'VDR') {
+            $update   = 'vendor.product.update';
+        }
+        return view('products.edit', compact('product', 'user', 'categories', 'brands', 'authors', 'update'));
     }
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Product $product)
     {
+        $user = Auth()->user();
+        if ($user->id != $product->author_id && $user->utype != 'ADM' ) {
+            return redirect()->back()->with('Error', 'Not allowed');
+        }
         $validated = $this->validation(
             $request,
             array(

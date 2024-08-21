@@ -10,7 +10,13 @@
                 <div class="login-title">
                     <h2>Register</h2>
                 </div>
-
+                <div class="select">
+                    <label for="account-type">Account type</label>
+                    <select class="form-select" id="account-type" name="account-type" title="Account type">
+                        <option value="customer">Customer</option>
+                        <option value="vendor">Vendor</option>
+                      </select> 
+                </div>
                 <div class="input">
                     <label for="name">Name</label>
                     <input type="text" id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required="" autofocus="" autocomplete="name">

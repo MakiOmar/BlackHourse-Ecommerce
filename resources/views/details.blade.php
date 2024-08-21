@@ -51,7 +51,7 @@
                                 <div class="col-lg-2">
                                     <div class="details-image-vertical black-slide rounded">
                                         <div>
-                                            <img src="{{ asset('assets/images/fashion/product/front') }}/{{$product->image}}"
+                                            <img src="{{ asset('assets/uploads') }}/{{$product->image}}"
                                                 class="img-fluid blur-up lazyload" alt="{{$product->name}}">
                                         </div>
                                         @if ($product->images)
@@ -60,7 +60,7 @@
                                             @endphp
                                             @foreach ($images as $image)
                                                 <div>
-                                                    <img src="{{ asset('assets/images/fashion/product/front') }}/{{$image}}" class="img-fluid blur-up lazyload" alt="{{$product->name}}">
+                                                    <img src="{{ asset('assets/uploads') }}/{{$image}}" class="img-fluid blur-up lazyload" alt="{{$product->name}}">
                                                 </div>
                                             @endforeach
                                         @endif
@@ -69,7 +69,7 @@
                                 <div class="col-lg-10">
                                     <div class="details-image-1 ratio_asos">
                                         <div>
-                                            <img src="{{ asset('assets/images/fashion/product/front') }}/{{$product->image}}" class="img-fluid w-100 image_zoom_cls-0 blur-up lazyload" alt="{{$product->image}}">
+                                            <img src="{{ asset('assets/uploads') }}/{{$product->image}}" class="img-fluid w-100 image_zoom_cls-0 blur-up lazyload" alt="{{$product->image}}">
                                         </div>
                                         @if ($product->images)
                                             @php
@@ -77,7 +77,7 @@
                                             @endphp
                                             @foreach ($images as $image)
                                             <div>
-                                                <img src="{{ asset('assets/images/fashion/product/front') }}/{{$image}}" class="img-fluid w-100 image_zoom_cls-1 blur-up lazyload" alt="{{$product->name}}">
+                                                <img src="{{ asset('assets/uploads') }}/{{$image}}" class="img-fluid w-100 image_zoom_cls-1 blur-up lazyload" alt="{{$product->name}}">
                                             </div>
                                             @endforeach
                                         @endif
@@ -111,89 +111,17 @@
 
                                 <div class="label-section">
                                     <span class="badge badge-grey-color">#1 Best seller</span>
-                                    <span class="label-text">in fashion</span>
+                                    <span class="label-text">in books</span>
                                 </div>
 
                                 <h3 class="price-detail">
                                     @if ($product->sale_price)
-                                        ${{ $product->regular_price }} <del>${{ $product->sale_price }}</del><span>{{ round( ( ($product->regular_price - $product->sale_price) / $product->regular_price ) * 100 ) }}% off</span></h3>
+                                        ${{ $product->regular_price }} <del>${{ $product->sale_price }}</del><span>{{ round( ( ($product->regular_price - $product->sale_price) / $product->regular_price ) * 100 ) }}% off</span>
                                     @else
                                         ${{ $product->regular_price }}
                                     @endif
                                     
-
-                                <div class="color-image">
-                                    <div class="image-select">
-                                        <h5>Color :</h5>
-                                        <ul class="image-section">
-                                            <li>
-                                                <a href="javascript:void(0)">
-                                                    <img src="../assets/images/fashion/product/front/5.jpg"
-                                                        class="img-fluid blur-up lazyload" alt="">
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0)">
-                                                    <img src="../assets/images/fashion/product/front/6.jpg"
-                                                        class="img-fluid blur-up lazyload" alt="">
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0)">
-                                                    <img src="../assets/images/fashion/product/front/7.jpg"
-                                                        class="img-fluid blur-up lazyload" alt="">
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div id="selectSize" class="addeffect-section product-description border-product">
-                                    <h6 class="product-title size-text">select size
-                                        <a href="javascript:void(0)" data-bs-toggle="modal"
-                                            data-bs-target="#sizemodal">size chart</a>
-                                    </h6>
-
-                                    <h6 class="error-message">please select size</h6>
-
-                                    <div class="size-box">
-                                        <ul>
-                                            <li>
-                                                <a href="javascript:void(0)">s</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0)">m</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0)">l</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0)">xl</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <h6 class="product-title product-title-2 d-block">quantity</h6>
-
-                                    <div class="qty-box">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <button type="button" class="btn quantity-left-minus"
-                                                    onclick="updateQuantity()" data-type="minus" data-field="">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
-                                            </span>
-                                            <input type="text" name="quantity" id="quantity"
-                                                class="form-control input-number" value="1">
-                                            <span class="input-group-prepend">
-                                                <button type="button" class="btn quantity-right-plus"
-                                                    onclick="updateQuantity()" data-type="plus" data-field="">
-                                                    <i class="fas fa-plus"></i>
-                                                </button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
+                                </h3>
 
                                 <div class="product-buttons">
                                     <a href="javascript:void(0)" class="btn btn-solid">
@@ -337,7 +265,7 @@
                                         </tr>
                                         <tr>
                                             <th>Manufacturer‏</th>
-                                            <td>Aditya Birla Fashion and Retail Limited</td>
+                                            <td>Aditya Birla books and Retail Limited</td>
                                         </tr>
                                         <tr>
                                             <th>ASIN</th>
@@ -802,7 +730,7 @@
                                 <div class="img-wrapper">
                                     <div class="front">
                                         <a href="{{ route( 'shop.product.details', ['slug' => $product->slug] ) }}">
-                                            <img src="{{ asset( 'assets/images/fashion/product/front' ) }}/{{ $product->image }}" class="bg-img blur-up lazyload" alt="{{ $product->name }}">
+                                            <img src="{{ asset( 'assets/uploads' ) }}/{{ $product->image }}" class="bg-img blur-up lazyload" alt="{{ $product->name }}">
                                         </a>
                                     </div>
                                     <div class="back">

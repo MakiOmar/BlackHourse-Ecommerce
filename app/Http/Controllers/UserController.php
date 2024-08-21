@@ -14,6 +14,11 @@ class UserController extends Controller
     {
         return view('users.index');
     }
+
+    public function vendorIndex()
+    {
+        return view('vendor.index');
+    }
     public function list()
     {
         return view('admin.users.index', ['users' => User::all()]);
@@ -33,6 +38,53 @@ class UserController extends Controller
                 return;
                 break;
         }
+    }
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        // Validate the request data
+        $validatedData = $request->validate(
+            array(
+                'first_name'  => 'required|string',
+                'last_name'   => 'nullable|string',
+                'email'       => 'required|email|unique:users,email',
+                'phone'       => 'nullable|string',
+                'home_number' => 'nullable|string',
+                'address'     => 'nullable|string',
+                'age'         => 'nullable|integer',
+                'bio'         => 'nullable|string',
+                'gender'      => 'nullable|integer',
+            )
+        );
+
+        $user = User::create(
+            array(
+                'name'        => $request['first_name'] . ' ' . $request['last_name'] ?? '',
+                'username'    => 'user_' . uniqid(),
+                'email'       => $request['email'],
+                'role'        => 'patient',
+                'phone'       => $request['phone'] ?? null,
+                'home_number' => $request['home_number'] ?? null,
+                'address'     => $request['address'] ?? null,
+                'password'    => Hash::make(uniqid()),
+            )
+        );
+
+        Profile::create(
+            array(
+                'user_id'    => $user->ID,
+                'first_name' => $request['first_name'] ?? null,
+                'last_name'  => $request['last_name'] ?? null,
+                'address'    => $request['address'] ?? null,
+                'age'        => $request['age'] ?? null,
+                'bio'        => $request['bio'] ?? null,
+                'gender'     => $request['gender'] ?? 1,
+            )
+        );
+
+        return redirect()->route('user.create')->with('success', 'User has been added successflly');
     }
     public function blockUser($user_id)
     {
@@ -64,14 +116,6 @@ class UserController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
     {
         //
     }

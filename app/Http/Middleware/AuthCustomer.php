@@ -16,9 +16,11 @@ class AuthCustomer
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->utype !== 'ADM' && Auth::user()->account_status === 'blocked') {
-            session()->flush();
-            return redirect()->route('login')->with('error', 'Your account is blocked. Please contact the administrator.');
+        if (Auth::check()) {
+            if (Auth::user()->utype !== 'ADM' && Auth::user()->account_status === 'blocked') {
+                session()->flush();
+                return redirect()->route('login')->with('error', 'Your account is blocked. Please contact the administrator.');
+            }
         }
         return $next($request);
     }

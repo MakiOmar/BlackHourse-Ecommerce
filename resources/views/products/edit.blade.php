@@ -7,10 +7,10 @@
     <a class="btn btn-primary m-2" href="{{ route( 'product' ) }}">Back</a>
     <h2>Edit Product</h2>
     @include( 'error-messages' )
-    <form action="{{ route('product.update', [ 'product' => $product->id ]) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route($update, [ 'product' => $product->id ]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
-
+        @if ( $user->utype === 'ADM' )
         <div class="form-group">
             <label for="author_id">Author</label>
             <select class="form-control" id="author_id" name="author_id" required>
@@ -23,6 +23,9 @@
                 @endforeach
             </select>
         </div>
+        @else
+        <input type="hidden" name='author_id' value="{{$user->id}}">
+        @endif
 
         <div class="form-group">
             <label for="name">Product Name</label>

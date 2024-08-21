@@ -54,5 +54,12 @@ class LoginController extends Controller
         if ($user->utype === 'ADM') {
             return redirect()->route('admin.index');
         }
+
+        if ($user->utype === 'USR' && $user->account_status !== 'blocked') {
+            return redirect()->route('user.index');
+        }
+        if ($user->utype === 'VDR' && $user->account_status !== 'blocked') {
+            return redirect()->route('vendor.index');
+        }
     }
 }

@@ -332,13 +332,13 @@
                             <div class="img-wrapper">
                                 <div class="front">
                                     <a href="{{ route( 'shop.product.details', ['slug' => $product->slug ] ) }}">
-                                        <img src="{{ asset( 'assets/images/fashion/product/front' ) }}/{{ $product->image }}"
+                                        <img src="{{ asset( 'assets/uploads' ) }}/{{ $product->image }}"
                                             class="bg-img blur-up lazyload" alt="">
                                     </a>
                                 </div>
                                 <div class="back">
                                     <a href="{{ route( 'shop.product.details', ['slug' => $product->slug ] ) }}">
-                                        <img src="a{{ asset( 'assets/images/fashion/product/back' ) }}/{{ $product->image }}"
+                                        <img src="a{{ asset( 'assets/uploads' ) }}/{{ $product->image }}"
                                             class="bg-img blur-up lazyload" alt="">
                                     </a>
                                 </div>
