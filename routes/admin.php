@@ -18,7 +18,6 @@ Route::group([ 'middleware' => ['auth', 'auth.admin'],'prefix' => 'admin', ], fu
         function () {
             Route::get('/show/{product}', array( ProductController::class, 'show' ))->name('product.show');
             Route::get('/edit/{product}', array( ProductController::class, 'edit' ))->name('product.edit');
-            Route::get('/create', array( ProductController::class, 'create' ))->name('product.create');
             Route::put('/edit/{product}', array( ProductController::class, 'update' ))->name('product.update');
             Route::put('/publish/{product}', array( ProductController::class, 'publish' ))->name('product.publish');
             Route::put('/pending/{product}', array( ProductController::class, 'pending' ))->name('product.pending');
@@ -27,6 +26,7 @@ Route::group([ 'middleware' => ['auth', 'auth.admin'],'prefix' => 'admin', ], fu
             Route::get('/', array( ProductController::class, 'index' ))->name('product');
         }
     );
+    
 
     Route::group(
         array(
@@ -45,3 +45,5 @@ Route::group([ 'middleware' => ['auth', 'auth.admin'],'prefix' => 'admin', ], fu
         }
     );
 });
+Route::get('/admin/product/create', array( ProductController::class, 'create' ))->name('product.create');
+Route::post('/admin/product/create', array( ProductController::class, 'store' ))->name('product.store');
