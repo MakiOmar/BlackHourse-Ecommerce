@@ -28,10 +28,6 @@
                 <td class="align-middle">
                     <div class="d-flex">
                         <a href="{{ route($edit, ['product' => $product->id]) }}" class="btn btn-primary">Edit</a>
-                        <form class="ms-2 me-2" action="{{ route($destroy, ['product' => $product->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');">
-                <td class="align-middle">
-                    <div class="d-flex">
-                        <a href="{{ route($edit, ['product' => $product->id]) }}" class="btn btn-primary">Edit</a>
                         <form action="{{ route($destroy, ['product' => $product->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');">
                             @csrf
                             @method('DELETE')

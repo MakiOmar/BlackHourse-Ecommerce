@@ -6,11 +6,13 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Brand;
+use Cart;
 
 class ShopController extends Controller
 {
     public function index(Request $request)
     {
+        $cartCount = Cart::content()->count();
         $page = $request->query('page') ?? 1;
         $size = $request->query('size') ?? 12;
         $order = $request->query('order') ?? -1;
@@ -75,6 +77,7 @@ class ShopController extends Controller
             'q_brands' => $q_brands,
             'from' => $from,
             'to' => $to,
+            'cartCount' => $cartCount,
         ]);
     }
 }

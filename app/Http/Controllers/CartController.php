@@ -11,7 +11,7 @@ class CartController extends Controller
     public function index()
     {
         $cartItems = Cart::content();
-        return view('cart', [ 'cartItems' => $cartItems ]);
+        return view('cart', [ 'cartItems' => $cartItems, 'cartCount' => count($cartItems) ]);
     }
     public function addToCart(Request $request)
     {

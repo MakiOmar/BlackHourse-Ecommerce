@@ -141,10 +141,6 @@
                                             <li><a href="{{ route('app.index') }}" class="nav-link menu-title">Home</a></li>
                                             <li><a href="{{ route( 'shop.index' ) }}" class="nav-link menu-title">Shop</a></li>
                                             <li><a href="{{ route( 'cart.index' ) }}" class="nav-link menu-title">Cart</a></li>
-                                            <li><a href="about-us.html" class="nav-link menu-title">About Us</a></li>
-                                            <li><a href="contact-us.html" class="nav-link menu-title">Contact Us</a>
-                                            </li>
-                                            <li><a href="blog.html" class="nav-link menu-title">Blog</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -171,7 +167,7 @@
                                             <a href="{{ route( 'cart.index' ) }}">
                                                 <i data-feather="shopping-cart"></i>
                                                 <span id="cart-count" class="label label-theme rounded-pill">
-                                                    {{ count( Cart::content() ) }}
+                                                    {{ isset( $cartCount ) ? $cartCount : 0 }}
                                                 </span>
                                             </a>
                                         </div>
@@ -242,7 +238,7 @@
     <div class="mobile-menu d-sm-none">
         <ul>
             <li>
-                <a href="demo3.php" class="active">
+                <a href="#" class="active">
                     <i data-feather="home"></i>
                     <span>Home</span>
                 </a>
@@ -410,7 +406,7 @@
                         </ul>
                     </div>
                     <div class="col-md-6">
-                        <p class="mb-0 font-dark">© 2023, Surfside Media.</p>
+                        <p class="mb-0 font-dark">© 2024, Blackhorse.</p>
                     </div>
                 </div>
             </div>

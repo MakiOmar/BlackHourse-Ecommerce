@@ -182,4 +182,43 @@
         </div>
     </div>
 </section>
+<form id="addtocart" method="post" action="{{ route('cart.store') }}">
+    @csrf
+    @method('POST')
+    <input type="hidden" name="id"  id="pid"  value="">
+    <input type="hidden" name="qty" id="qty" value="1">
+</form>
 @endsection
+
+@push('scripts')
+    <script>
+        function addToWishlist(id,name,quantity,price){
+            $.ajax({
+                type:'POST',
+                url:"{{ route('wishlist.store') }}",
+                data:{
+                    '_token' : "{{ csrf_token() }}",
+                    id : id,
+                    name : name,
+                    quantity : quantity,
+                    price : price,
+                },
+                success: function(data){
+                    if( data.status === 200 ){
+                        $.notify({
+                            'icon': 'fa fa-check',
+                            'title': '!Success',
+                            'message': data.message,
+                        });
+                        $("#wishlist-count").text(data.count);
+                    }
+                }
+            });
+        }
+        function addtocart(id) {
+           
+            $("#pid").val( id );
+            $("#addtocart").submit();
+        }
+    </script>
+@endpush
