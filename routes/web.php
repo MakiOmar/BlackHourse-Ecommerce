@@ -18,7 +18,7 @@ Route::get('/', [ AppController::class, 'index' ])->name('app.index');
 
 Auth::routes();
 
-// This should check if a user has been blocked and
+// This should check if a user has been blocked and prevent login
 Route::post(
     '/login',
     [
