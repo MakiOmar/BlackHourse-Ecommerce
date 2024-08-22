@@ -92,7 +92,7 @@ class ProductController extends Controller
             'stock_status' => 'required|in:instock,outofstock',
             'featured' => 'nullable|boolean',
             'quantity' => 'required|integer|min:0',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
+            'image' => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
             'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpg,jpeg,png,gif,webp|max:2048',
             'category_id' => 'nullable|exists:categories,id',
