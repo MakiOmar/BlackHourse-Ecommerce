@@ -23,15 +23,19 @@ class ProductController extends Controller
             $products = Product::all();
             $view     = 'product.show';
             $edit     = 'product.edit';
+            $destroy   = 'product.destroy';
+            $create   = 'product.create';
         } elseif ($user->utype === 'VDR') {
             $products = Product::where('author_id', $user->id)->get();
             $view     = 'vendor.product.show';
             $edit     = 'vendor.product.edit';
+            $destroy   = 'vendor.product.destroy';
+            $create   = 'vendor.product.create';
         }
         // Method two
         // $products = Product::where( 'user_id', Auth()->id() )->get();
 
-        return view('products.index', compact('user', 'products', 'view', 'edit'));
+        return view('products.index', compact('user', 'products', 'view', 'edit', 'destroy', 'create'));
     }
 
     public function productDetails($slug)
@@ -58,10 +62,15 @@ class ProductController extends Controller
     public function create()
     {
         $user = Auth()->user();
-        $authors = User::all();
+        $authors = User::where('utype', 'VDR')->get();
         $categories = Category::all();
         $brands = Brand::all();
-        return view('products.create', compact('authors', 'categories', 'brands'));
+        if ($user->utype === 'ADM') {
+            $create   = 'product.store';
+        } elseif ($user->utype === 'VDR') {
+            $create   = 'vendor.product.store';
+        }
+        return view('products.create', compact('authors', 'categories', 'brands', 'user', 'create'));
     }
 
     /**
@@ -83,14 +92,15 @@ class ProductController extends Controller
             'stock_status' => 'required|in:instock,outofstock',
             'featured' => 'nullable|boolean',
             'quantity' => 'required|integer|min:0',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
             'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpg,jpeg,png,gif|max:2048',
-            'category_id' => 'required|exists:categories,id',
+            'images.*' => 'image|mimes:jpg,jpeg,png,gif,webp|max:2048',
+            'category_id' => 'nullable|exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
         ];
         $validate = array_merge($default, $extra_validation);
         $validatedData =  $request->validate($validate);
+
 
         // Handle single image upload
         if ($request->hasFile('image')) {
@@ -118,9 +128,15 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        if (Auth()->user()->utype === 'ADM') {
+            $edit   = 'product.edit';
+        } elseif (Auth()->user()->utype === 'VDR') {
+            $edit   = 'vendor.product.edit';
+        }
+
         $validated = $this->validation($request, array( 'slug' => 'required|string|max:255|unique:products,slug', 'SKU' => 'required|string|max:100|unique:products,SKU', ));
         $product   = Product::create($validated);
-        return redirect()->route('product.edit', array( 'product' => $product->id ));
+        return redirect()->route($edit, array( 'product' => $product->id ));
     }
 
     /**
@@ -155,7 +171,7 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $user = Auth()->user();
-        if ($user->id != $product->author_id && $user->utype != 'ADM' ) {
+        if ($user->id != $product->author_id && $user->utype != 'ADM') {
             return redirect()->back()->with('Error', 'Not allowed');
         }
         $validated = $this->validation(
@@ -184,10 +200,15 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        if (Auth()->user()->utype === 'ADM') {
+            $trdirect   = 'product';
+        } elseif (Auth()->user()->utype === 'VDR') {
+            $trdirect   = 'vendor.products';
+        }
         if ($product->delete()) {
-            return redirect()->route('product')->with('success', 'Product deleted successfully.');
+            return redirect()->route($trdirect)->with('success', 'Product deleted successfully.');
         } else {
-            return redirect()->route('product')->with('error', 'Failed to delete the product.');
+            return redirect()->route($trdirect)->with('error', 'Failed to delete the product.');
         }
     }
 }

@@ -186,7 +186,6 @@
                                                             </li>
                                                         @endif
                                                         <li>
-                                                            <a href="{{ route('logout') }}" class="d-block">Logout</a>
                                                             <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frmlogout').submit();">Logout</a>
                                                             <form id="frmlogout" action="{{ route('logout') }}" method="POST" class="d-none">
                                                                 @csrf
@@ -252,24 +251,26 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3 sidebar navbar-light">
-                <h2 class="mb-3">Dashboard</h2>
+                <h2 class="mb-3"><a href={{route('admin.index')}}>Dashboard</a></h2>
                 <ul class="navbar-nav mr-auto flex-column vertical-nav">
                     <li class="nav-item">
                         <h3>PRODUCTS</h3>
                         <ul class="submenu d-flex flex-column">
-                            <li><a class="nav-link" href="{{ route('product') }}">All Product</a></li>
-                            <li><a class="nav-link" href="{{ route('product.create') }}">Add Product</a></li>
+                            <li><a class="nav-link" href="{{ Auth::user()->utype === 'ADM' ? route('product') : route('vendor.products') }}">All Product</a></li>
+                            <li><a class="nav-link" href="{{ Auth::user()->utype === 'ADM' ? route('product.create') : route('vendor.product.create') }}">Add Product</a></li>
                         </ul>
                     </li>
+                    @if( Auth::user()->utype === 'ADM' )
                     <hr class="hr" />
                     <li>
                         <h3>USERS</h3>
                         
                         <ul class="submenu d-flex flex-column">
                             <li><a class="nav-link" href="{{route( 'users.list' )}}">Users</a></li>
-                            <li><a class="nav-link" href="#">Create user</a></li>
+                            <li><a class="nav-link" href="{{route( 'user.create' )}}">Create user</a></li>
                         </ul>
                     </li>
+                    @endif
                 </ul>
             </div>
             <div class="col-md-9 content">
