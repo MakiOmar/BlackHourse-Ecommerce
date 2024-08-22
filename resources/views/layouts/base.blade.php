@@ -188,13 +188,16 @@
                                                             <li>
                                                                 <a href="{{ route('admin.index') }}" class="d-block">Dashboard</a>
                                                             </li>
-                                                        @else
+                                                        @elseif( Auth::user()->utype === 'USR' )
                                                             <li>
                                                                 <a href="{{ route('user.index') }}" class="d-block">My Account</a>
                                                             </li>
+                                                        @else
+                                                        <li>
+                                                            <a href="{{ route('vendor.index') }}" class="d-block">Dashboard</a>
+                                                        </li>
                                                         @endif
                                                         <li>
-                                                            <a href="{{ route('logout') }}" class="d-block">Logout</a>
                                                             <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frmlogout').submit();">Logout</a>
                                                             <form id="frmlogout" action="{{ route('logout') }}" method="POST" class="d-none">
                                                                 @csrf

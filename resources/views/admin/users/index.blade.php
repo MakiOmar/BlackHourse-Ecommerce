@@ -22,11 +22,16 @@
                         <td class="align-middle">{{ $user->id }}</td>
                         <td class="align-middle">{{ $user->email }}</td>
                         <td class="align-middle">{{ $user->name }}</td>
-                        <td class="align-middle">@if ( $user->utype === 'ADM' ) Admin @else Customer @endif</td>
+                        <td class="align-middle">@if ( $user->utype === 'ADM' ) Admin @elseif( $user->utype === 'USR' ) Customer @else Vendor @endif</td>
                         <td class="align-middle">{{ $user->account_status }}</td>
                         <td class="align-middle">
                             @if ( $user->utype !== 'ADM' )
                             <div class="d-flex">
+                                <form action="{{ route('user.edit', ['user' => $user->id]) }}" class="m-2" method="GET">
+                                    @csrf
+                                    @method('GET')
+                                    <button class="btn btn-primary" type="submit">Edit</button>
+                                </form>
                                 <form action="{{ route('user.destroy', ['user' => $user->id]) }}" class="m-2" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
                                     @csrf
                                     @method('DELETE')

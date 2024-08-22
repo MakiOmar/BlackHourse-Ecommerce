@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -45,44 +46,28 @@ class UserController extends Controller
     public function store(Request $request)
     {
         // Validate the request data
-        $validatedData = $request->validate(
-            array(
-                'first_name'  => 'required|string',
-                'last_name'   => 'nullable|string',
-                'email'       => 'required|email|unique:users,email',
-                'phone'       => 'nullable|string',
-                'home_number' => 'nullable|string',
-                'address'     => 'nullable|string',
-                'age'         => 'nullable|integer',
-                'bio'         => 'nullable|string',
-                'gender'      => 'nullable|integer',
-            )
-        );
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'nullable|min:6',
+            'account_type' => 'required|string|in:customer,vendor,admin',
+        ]);
+        switch ($validatedData['account_type']) {
+            case 'admin':
+                $utype = 'ADM';
+                break;
 
-        $user = User::create(
-            array(
-                'name'        => $request['first_name'] . ' ' . $request['last_name'] ?? '',
-                'username'    => 'user_' . uniqid(),
-                'email'       => $request['email'],
-                'role'        => 'patient',
-                'phone'       => $request['phone'] ?? null,
-                'home_number' => $request['home_number'] ?? null,
-                'address'     => $request['address'] ?? null,
-                'password'    => Hash::make(uniqid()),
-            )
-        );
+            case 'vendor':
+                $utype = 'VDR';
+                break;
 
-        Profile::create(
-            array(
-                'user_id'    => $user->ID,
-                'first_name' => $request['first_name'] ?? null,
-                'last_name'  => $request['last_name'] ?? null,
-                'address'    => $request['address'] ?? null,
-                'age'        => $request['age'] ?? null,
-                'bio'        => $request['bio'] ?? null,
-                'gender'     => $request['gender'] ?? 1,
-            )
-        );
+            default:
+                $utype = 'USR';
+                break;
+        }
+        unset($validatedData['account_type']);
+        $validatedData['utype'] = $utype;
+        $user = User::create($validatedData);
 
         return redirect()->route('user.create')->with('success', 'User has been added successflly');
     }
@@ -117,7 +102,12 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+
+        $user = Auth()->user();
+
+        if ($user && $user->utype === 'ADM') {
+        }
+        return view('admin.users.create', compact('user'));
     }
 
     /**
@@ -133,15 +123,61 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $authUser = Auth()->user();
+        if ($authUser) {
+            $user = $authUser;
+            if ($authUser->utype === 'ADM') {
+                $edit = 'admin.users.edit';
+                // Find the user by ID
+                $user = User::find($id);
+            } elseif ($authUser->utype === 'VDR') {
+                $edit = 'vendor.account';
+            } else {
+                $edit = 'customer.account';
+            }
+        }
+        if ($user) {
+            return view($edit, compact('user'));
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'nullable|min:6',
+            'account_type' => 'required|string|in:customer,vendor,admin',
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        switch ($request->account_type) {
+            case 'admin':
+                $utype = 'ADM';
+                break;
+
+            case 'vendor':
+                $utype = 'VDR';
+                break;
+
+            default:
+                $utype = 'USR';
+                break;
+        }
+        $user->utype = $utype;
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'User updated successfully');
     }
 
     /**

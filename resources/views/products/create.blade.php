@@ -5,19 +5,26 @@
 <!-- add-product.blade.php -->
 <div class="container mt-5">
     <h2>Create Product</h2>
-    <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data">
+    @include( 'error-messages' )
+    <form action="{{ route($create) }}" method="POST" enctype="multipart/form-data">
         @csrf
 
+        @if ( $user->utype === 'ADM' )
         <div class="form-group">
             <label for="author_id">Author</label>
             <select class="form-control" id="author_id" name="author_id" required>
                 <option value="">Select Author</option>
                 <!-- Populate with authors -->
                 @foreach($authors as $author)
-                    <option value="{{ $author->id }}">{{ $author->name }}</option>
+                    <option value="{{ $author->id }}">
+                        {{ $author->name }}
+                    </option>
                 @endforeach
             </select>
         </div>
+        @else
+        <input type="hidden" name='author_id' value="{{$user->id}}">
+        @endif
 
         <div class="form-group">
             <label for="name">Product Name</label>
