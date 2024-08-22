@@ -21,11 +21,11 @@ Route::group(
         'prefix' => 'cart',
     ),
     function () {
-        Route::get('/', [CartController::class, 'index'])->name('cart.index');
         Route::post('/store', [CartController::class, 'addToCart'])->name('cart.store');
         Route::put('/update', [CartController::class, 'updateCart'])->name('cart.update');
         Route::delete('/remove', [CartController::class, 'removeItem'])->name('cart.remove');
         Route::delete('/clear', [CartController::class, 'clearCart'])->name('cart.clear');
+        Route::get('/', [CartController::class, 'index'])->name('cart.index');
     }
 );
 
