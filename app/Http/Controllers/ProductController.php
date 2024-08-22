@@ -194,6 +194,32 @@ class ProductController extends Controller
         $product->update($validated);
         return redirect()->back()->with('success', 'Product has been updated');
     }
+    /**
+     * Publis the specified resource in storage.
+     */
+    public function publish(Product $product)
+    {
+        $user = Auth()->user();
+        if ($user->utype != 'ADM') {
+            return redirect()->back()->with('Error', 'Not allowed');
+        }
+        $product->status = 'published';
+        $product->save();
+        return redirect()->back()->with('success', 'Product has been published');
+    }
+    /**
+     * Publis the specified resource in storage.
+     */
+    public function pending(Product $product)
+    {
+        $user = Auth()->user();
+        if ($user->utype != 'ADM') {
+            return redirect()->back()->with('Error', 'Not allowed');
+        }
+        $product->status = 'pending';
+        $product->save();
+        return redirect()->back()->with('success', 'Product has been set to be pending');
+    }
 
     /**
      * Remove the specified resource from storage.

@@ -9,7 +9,7 @@ class AppController extends Controller
 {
     public function index()
     {
-        $products = Product::get()->take(12);
+        $products = Product::where('status', 'published')->get()->take(12);
         return view('index', [
             'products' => $products,
         ]);

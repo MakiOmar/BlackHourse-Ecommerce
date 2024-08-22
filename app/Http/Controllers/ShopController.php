@@ -61,6 +61,7 @@ class ShopController extends Controller
                 $query->whereIn('brand_id', explode(',', $q_brands))->orWhereRaw("'" . $q_brands . "'=''");
             }
         )
+        ->where('status', 'published')
         ->whereBetween('regular_price', array($from,$to))
         ->orderBy($order_by, $order_type)->paginate($size);
         return view('shop', [
